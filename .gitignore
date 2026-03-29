@@ -1,0 +1,19 @@
+# 忽略所有软件安装包和压缩包
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.iso
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# 忽略 Java 编译后的文件（写 Java 必备）
+*.class
+*.jar
+*.war
+
+# 忽略临时文件和系统文件
+.DS_Store
+Thumbs.db

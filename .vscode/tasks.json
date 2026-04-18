@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "编译运行 Java (src目录)",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/day08-面向对象/代码/oop-code/oop-code/src && javac com/itheima/test1/PhoneTest.java && java com.itheima.test1.PhoneTest",
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "编译 Java 文件",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/day08-面向对象/代码/oop-code/oop-code/src && javac ${relativeFile}",
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "运行当前 Java 类",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/day08-面向对象/代码/oop-code/oop-code/src && java ${fileBasenameNoExtension}",
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}

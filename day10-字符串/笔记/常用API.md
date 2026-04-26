@@ -44,26 +44,32 @@
 
 ## 2. String类
 
+字符串在开发中应用的实际场景：字符串匹配、
+
 ### 2.1 String类概述
 
-​	String 类代表字符串，Java 程序中的所有字符串文字（例如“abc”）都被实现为此类的实例。也就是说，Java 程序中所有的双引号字符串，都是 String 类的对象。String 类在 java.lang 包下，所以使用的时候不需要导包！
+​	String 类代表字符串，Java 程序中的所有字符串文字（例如“abc”）都被实现为此类的实例。也就是说，Java 程序中所有的双引号字符串，都是 String 类的对象。String 类在 java.lang 包下，使用的时候不需要导包。Java程序中所有的字符串文字都被视为此类的对象。
 
 ### 2.2 String类的特点
 
-- 字符串不可变，它们的值在创建后不能被更改
+- 字符串不可变，它的值在创建后不能被更改
 - 虽然 String 的值是不可变的，但是它们可以被共享
 - 字符串效果上相当于字符数组( char[] )，但是底层原理是字节数组( byte[] )
 
 ### 2.3 String类的构造方法
 
+创建String对象的两种方式：直接赋值/new
+
 - 常用的构造方法
 
-  | 方法名                      | 说明                                      |
-  | --------------------------- | ----------------------------------------- |
-  | public   String()           | 创建一个空白字符串对象，不含有任何内容    |
-  | public   String(char[] chs) | 根据字符数组的内容，来创建字符串对象      |
-  | public   String(byte[] bys) | 根据字节数组的内容，来创建字符串对象      |
-  | String s =   “abc”;         | 直接赋值的方式创建字符串对象，内容就是abc |
+  | 方法名                         | 说明                                                         |
+  | ------------------------------ | ------------------------------------------------------------ |
+  | public   String()              | 空参构造：创建一个空白字符串对象，不含有任何内容             |
+  | public String(String original) | 根据传入的字符串，创建字符串对象                             |
+  | public   String(char[] chs)    | 根据字符数组的内容，来创建字符串对象                         |
+  | public   String(byte[] bys)    | 根据字节数组的内容，来创建字符串对象（到ASCII表中查到数字对应的字母，将其转化为字符串） |
+  | String s =   “abc”;            | 直接赋值的方式创建字符串对象，内容就是abc                    |
+
 
 - 示例代码
 
@@ -91,29 +97,43 @@
   }
   ```
 
-### 2.4创建字符串对象两种方式的区别
+### 2.4 创建字符串对象两种方式的区别
 
 - 通过构造方法创建
 
-  ​	通过 new 创建的字符串对象，每一次 new 都会申请一个内存空间，虽然内容相同，但是地址值不同
+  ​	通过 new 创建的字符串对象，每一次 new 都会申请一个内存空间，虽然内容相同，但是地址值不同，将地址值赋值给对应的对象，不复用，浪费空间
 
-- 直接赋值方式创建
+- 直接赋值方式创建（代码简单，节约内存）
 
   ​	以“”方式给出的字符串，只要字符序列相同(顺序和大小写)，无论在程序代码中出现几次，JVM 都只会建立一个 String 对象，并在字符串池中维护
+  
+  当使用双引号直接赋值时，系统会检查该字符串在串池中是否存在。
+  不存在：创建新的             存在：复用
 
-### 2.5字符串的比较
+### 2.5 字符串的比较
 
-#### 2.5.1==号的作用
+#### 2.5.1 ==号的作用
 
-- 比较基本数据类型：比较的是具体的值
+- 比较基本数据类型：比较的是具体的数据值
+
 - 比较引用数据类型：比较的是对象地址值
 
-#### 2.5.2equals方法的作用
+  如果一个数据是new出来的（记录的是其在堆内存的地址）/键盘录入的，另一个是直接赋值的（记录的是其在字符串池的地址），如何比较？
+
+  注意键盘录入的字符串是new出来的
+
+- 字符串比较
+
+  - boolean equals方法（要比较的字符串）：完全一样结果才是true，否则为false
+  - boolean equakslgnoreCase（要比较的字符串）：忽略大小写的比较
+  
+
+#### 2.5.2 equals方法的作用
 
 - 方法介绍
 
   ```java
-  public boolean equals(String s)     比较两个字符串内容是否相同、区分大小写
+  public boolean equals(String s)  //比较两个字符串内容是否相同、区分大小写
   ```
 
 - 示例代码
@@ -144,16 +164,16 @@
   }
   ```
 
-### 2.6用户登录案例
+### 2.6 用户登录案例
 
-#### 2.6.1案例需求
+#### 2.6.1 案例需求
 
 ​	已知用户名和密码，请用程序实现模拟用户登录。总共给三次机会，登录之后，给出相应的提示
 
-#### 2.6.2代码实现
+#### 2.6.2 代码实现
 
 ```java
-public class Test1登录案例 {
+public class SignUpTest1 {
     public static void main(String[] args) {
         //1.定义两个变量用来记录正确的用户名和密码
         String rightUsername = "itheima";
@@ -172,40 +192,39 @@ public class Test1登录案例 {
             //3.判断比较
             if (username.equals(rightUsername) && password.equals(rightPassword)) {
                 System.out.println("登录成功");
-                //如果正确，循环结束
+                //正确，循环结束
                 break;
             } else {
                 //最后一次机会
                 if(i == 2){
-                    System.out.println("账户" + username + "被锁定，请联系黑马程序员官方小姐姐：XXXXXXX");
+                    System.out.println("账户" + username + "被锁定，请联系黑马程序员官方客服：XXXXXXX");
                 }else{
                     //不是最后一次机会
                     System.out.println("用户名或密码错误，登录失败,还剩下" + (2 - i) + "次机会");//2 1 0
                 }
             }
         }
-
     }
 }
-
 ```
 
-### 2.7遍历字符串案例
+### 2.7 遍历字符串案例
 
-#### 2.7.1案例需求
+#### 2.7.1 案例需求
 
 ​	键盘录入一个字符串，使用程序实现在控制台遍历该字符串
 
-#### 2.7.2直接遍历字符串
+#### 2.7.2 直接遍历字符串
 
 ```java
 public class Test2字符串直接遍历 {
     public static void main(String[] args) {
         //两个方法：
-        //charAt()：会根据索引获取对应的字符
-        //length(): 会返回字符串的长度
-
-
+        //public char charAt(int index)：根据索引获取对应的字符
+        //public int length(): 返回字符串的长度
+				//数组的长度：数组名.length  属性，不加()
+        //字符串的长度：字符串对象.length()  方法，要加()
+      
         //1.键盘录入一个字符串
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入字符串");
@@ -215,7 +234,7 @@ public class Test2字符串直接遍历 {
         //2.遍历
         for (int i = 0; i < str.length(); i++) {
             //i 依次表示字符串的每一个索引
-            //索引的范围：0 ~  长度-1
+            //索引的范围：0 ~ 长度-1
 
             //根据索引获取字符串里面的每一个字符
             //ctrl + alt + V 自动生成左边的接受变量
@@ -223,32 +242,27 @@ public class Test2字符串直接遍历 {
             System.out.println(c);
         }
     }
-}
-
+} 
 ```
 
-### 2.8统计字符次数案例
+### 2.8 统计字符次数
 
-#### 2.8.1案例需求
+#### 2.8.1 案例需求
 
 ​	键盘录入一个字符串，统计该字符串中大写字母字符，小写字母字符，数字字符出现的次数(不考虑其他字符)
 
-#### 2.8.2代码实现
+#### 2.8.2 代码实现
 
 ```java
-public class Test4统计个数 {
+public class StringCount {
     public static void main(String[] args) {
-        //键盘录入一个字符串，统计大写，小写，数字出现的次数
-
-
         //1.键盘录入一个字符串
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入一个字符串");
         String str = sc.next();
 
-
         //2.统计 --- 计数器count
-        //此时我要统计的有3样东西，所以要定义3个计数器分别进行统计
+        //要统计的有3样东西，定义3个计数器分别进行统计
         int bigCount = 0;
         int smallCount = 0;
         int numberCount = 0;
@@ -259,6 +273,7 @@ public class Test4统计个数 {
             char c = str.charAt(i);
 
             //对c进行判断
+            //char类型的变量在参与计算的时候会自动类型提升为int，查询ascii码表对应的值
             if (c >= 'a' && c <= 'z') {
                 smallCount++;
             }else if(c >= 'A' && c <= 'Z'){
@@ -268,75 +283,59 @@ public class Test4统计个数 {
             }
         }
 
-        //3.当循环结束之后，三个变量记录的就是对应的个数
+        //3.循环结束之后，三个变量记录的就是对应的个数
         System.out.println("大写字符有:" + bigCount + "个");
         System.out.println("小写字符有:" + smallCount + "个");
         System.out.println("数字字符有:" + numberCount + "个");
     }
 }
-
 ```
 
-### 2.9字符串拼接案例
+### 2.9 字符串拼接
 
-#### 2.9.1案例需求
+#### 2.9.1 案例需求
 
-​	定义一个方法，把 int 数组中的数据按照指定的格式拼接成一个字符串返回，调用该方法，
+​	定义一个方法，把 int 数组中的数据按照指定的格式拼接成一个字符串返回，调用该方法，并在控制台输出结果。例如，数组为 int[] arr = {1,2,3}; ，执行方法后的输出结果为：[1, 2, 3]
 
-​	并在控制台输出结果。例如，数组为 int[] arr = {1,2,3}; ，执行方法后的输出结果为：[1, 2, 3]
-
-#### 2.9.2代码实现
+#### 2.9.2 代码实现
 
 ```java
 public class Test5数组拼接成字符串 {
     public static void main(String[] args) {
-        //定义一个方法，把 int 数组中的数据按照指定的格式拼接成一个字符串返回，调用该方法，
-        //并在控制台输出结果。例如，数组为 int[] arr = {1,2,3};
-        //执行方法后的输出结果为：[1, 2, 3]
-
-
         int[] arr = {1, 2, 3, 4, 5};
-
         String str = arrToString(arr);
         System.out.println(str);
-
     }
-
 
     //作用：把一个数组变成字符串
     public static String arrToString(int[] arr) {
         String s = "";
         //拼接左括号
-        s = s + "["; //此时是拿着长度为0的字符串，跟[进行拼接，产生一个新的字符串。
+        s = s + "["; //拿着长度为0的字符串，跟[进行拼接，产生一个新的字符串。
         //把新的字符串再赋值给s，此时变量s记录的就是新的字符串"["的地址值
 
-        //下面我想得到数组里面的每一个元素并进行拼接
-        //那么就需要遍历数组，得到每一个元素才行
+        //遍历数组得到数组里面的每一个元素并进行拼接
         for (int i = 0; i < arr.length; i++) {
-            //假设第一次循环:i = 0 获取的就是0索引上的元素
-            //在拼接的时候："[" + 1 + ", " 拼接完毕之后产生一个新的字符串 "[1, "
+            //第一次循环:i = 0 获取的就是0索引上的元素
+            //"[" + 1 + ", " 拼接完毕之后产生一个新的字符串 "[1, "
             //第二次循环：i = 1 获取的就是1索引上的元素
-            //在拼接的时候： 此时s就是第一次循环结束后拼接完毕的结果："[1, "
-            //在拼接的时候："[1, " + 2 + ", " 拼接完毕之后产生一个新的字符串 "[1, 2, "
-            //...
+            // 此时s就是第一次循环结束后拼接完毕的结果："[1, "
+            //"[1, " + 2 + ", " 拼接完毕之后产生一个新的字符串 "[1, 2, "
            if(i == arr.length - 1){
-               //如果是最后一个元素，那么不需要拼接逗号空格
+               //是最后一个元素，不需要拼接逗号空格
                s = s + arr[i];
            }else{
-               //如果不是最后一个元素，需要拼接元素和逗号空格
+               //不是最后一个元素，需要拼接元素和逗号空格
                s = s + arr[i] + ", ";
            }
         }
 
-        //等循环结束之后，再拼接最后一个右括号
+        //循环结束之后，再拼接最后一个右括号
         s = s + "]";
-
         return s;
-
     }
 
-
-    //用来遍历数组
+    //遍历数组
     public static void printArr(int[] arr) {
         System.out.print("[");
         for (int i = 0; i < arr.length; i++) {
@@ -347,64 +346,45 @@ public class Test5数组拼接成字符串 {
             }
         }
         System.out.println("]");
-
-        //[1, 2, 3, 4, 5]
-        //我们现在要知道，这个最终结果是怎么来的？
-        //从到右依次打印得来的。
+        //从到右依次打印得到[1, 2, 3, 4, 5]
     }
 }
-
 ```
 
-### 2.10字符串反转案例
+### 2.10 字符串反转
 
-#### 2.10.1案例需求
+#### 2.10.1 案例需求
 
-​	定义一个方法，实现字符串反转。键盘录入一个字符串，调用该方法后，在控制台输出结果
+​	定义一个方法，实现字符串反转。键盘录入一个字符串，调用该方法后，在控制台输出结果。例如，键盘录入 abc，输出结果 cba
 
-​	例如，键盘录入 abc，输出结果 cba
-
-#### 2.10.2代码实现
+#### 2.10.2 代码实现
 
 ```java
 public class Test6反转字符串 {
     public static void main(String[] args) {
-        /*定义一个方法，实现字符串反转。键盘录入一个字符串，调用该方法后，在控制台输出结果
-        例如，键盘录入 abc，输出结果 cba*/
-
-
-
         //1.定义一个字符串
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入一个字符串");
         String str = sc.next();
         //2.定义一个方法，反转字符串
-        //abc  --->  cba
-        //可以把字符串倒着遍历，再拼接
         String result = reverse(str);
         System.out.println(result);
-
-
     }
 
-    //注释：方法的作用就是反转字符串
-    //把传递进来的字符串进行反转
+    //方法的作用是反转字符串
     public static String reverse(String str){//abc
-        //核心思想：倒着遍历并进行拼接就可以了
+        //核心思想：倒着遍历并进行拼接
         //fori :正着遍历  forr：倒着遍历
         String s = "";
         for (int i = str.length() - 1; i >= 0; i--) {
-            //i 依次表示字符串里面的每一个索引（倒着的）
-            //我们就可以拿到里面的每一个字符并拼接
+            //i 依次表示字符串里面的每一个索引（倒序）
             s = s + str.charAt(i);
         }
 
         //把倒着拼接之后的结果返回即可
         return s;
-
     }
 }
-
 ```
 
 ### 2.11 金额转换
@@ -441,8 +421,8 @@ public class StringDemo9 {
         String moneyStr = "";
 
         //2.得到money里面的每一位数字,再转成中文
-        while (true) {//2135
-            //从右往左获取数据，因为右侧是数据的个位
+        while (true) {
+            //从右往左获取数据，右侧是数据的个位
             int ge = money % 10;
             String capitalNumber = getCapitalNumber(ge);
             //把转换之后的大写拼接到moneyStr当中
@@ -463,7 +443,6 @@ public class StringDemo9 {
         for (int i = 0; i < count; i++) {
             moneyStr = "零" + moneyStr;
         }
-        System.out.println(moneyStr);//零零零贰壹叁伍
 
         //4.插入单位
         //定义一个数组表示单位
@@ -471,7 +450,7 @@ public class StringDemo9 {
         //               零    零   零   贰   壹   叁   伍
 
         //遍历moneyStr，依次得到 零    零   零   贰   壹   叁   伍
-        //然后把arr的单位插入进去
+        //把arr的单位插入进去
 
         String result = "";
         for (int i = 0; i < moneyStr.length(); i++) {
@@ -482,9 +461,7 @@ public class StringDemo9 {
 
         //5.打印最终结果
         System.out.println(result);
-
     }
-
 
     //定义一个方法把数字变成大写的中文
     //1 -- 壹
@@ -494,9 +471,7 @@ public class StringDemo9 {
         //返回结果
         return arr[number];
     }
-
 }
-
 ```
 
 ### 2.12 手机号屏蔽
@@ -510,9 +485,6 @@ public class StringDemo9 {
 ```java
 public class Test8手机号屏蔽 {
     public static void main(String[] args) {
-        /*以字符串的形式从键盘接受一个手机号，将中间四位号码屏蔽
-        最终效果为：131****9468*/
-
         //1.键盘录入一个手机号码
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入手机号码");
@@ -528,43 +500,18 @@ public class Test8手机号屏蔽 {
 
         //4.拼接
         String result = star + "****" + end;
-
         System.out.println(result);
-
     }
 }
-
 ```
 
 ### 2.13 敏感词替换 
 
-需求1：键盘录入一个 字符串，如果字符串中包含（TMD），则使用***替换 
+需求：键盘录入一个字符串，如果字符串中包含敏感词，用***替换 
 
 ```java
 public class Test9敏感词替换 {
     public static void main(String[] args) {
-        //1.定义一个变量表示骂人的话
-        String talk = "后裔你玩什么啊，TMD";
-
-
-        //2.把这句话中的敏感词进行替换
-        String result = talk.replace("TMD", "***");
-
-        //3.打印
-        System.out.println(talk);
-        System.out.println(result);
-    }
-}
-
-```
-
-需求2：如果要替换的敏感词比较多怎么办？
-
-```java
-public class Test10多个敏感词替换 {
-    public static void main(String[] args) {
-        //实际开发中，敏感词会有很多很多
-
         //1.先键盘录入要说的话
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入要说的话");
@@ -574,7 +521,6 @@ public class Test10多个敏感词替换 {
         String[] arr = {"TMD","GDX","ctmd","ZZ","lj","FW","nt"};
 
         //3.把说的话中所有的敏感词都替换为***
-
         for (int i = 0; i < arr.length; i++) {
             //i 索引
             //arr[i] 元素 --- 敏感词
@@ -583,10 +529,8 @@ public class Test10多个敏感词替换 {
 
         //4.打印结果
         System.out.println(talk);//后裔你玩什么啊，***,***,***,***
-
     }
 }
-
 ```
 
 ### 2.14 身份证信息查看
@@ -622,7 +566,6 @@ public class StringDemo11 {
         String month = id.substring(10, 12);
         String day = id.substring(12, 14);
 
-
         System.out.println("人物信息为：");
         System.out.println("出生年月日:" + year + "年" + month + "月" + day + "日");
 
@@ -631,13 +574,7 @@ public class StringDemo11 {
         //利用ASCII码表进行转换
         //'0' --->  48
         //'1' --->  49
-        //'2' --->  50
-        //'3' --->  51
-        //'4' --->  52
-        //'5' --->  53
-        //'6' --->  54
-        //'7' --->  55
-        //'8' --->  56
+				//...
         //'9' --->  57
 
        int num = gender - 48;
@@ -654,7 +591,24 @@ public class StringDemo11 {
 
 StringBuilder 可以看成是一个容器，创建之后里面的内容是可变的。
 
-当我们在拼接字符串和反转字符串的时候会使用到
+作用：提高字符串的操作效率
+
+在拼接字符串时只会产生一个字符串对象，避免拼接过程中产生多个对象浪费内存、降低效率
+
+构造方法：
+| 方法名                           | 说明                                                 |
+| -------------------------------- | ---------------------------------------------------- |
+| public   StringBuilder()         | 空参构造：创建一个空白可变字符串对象，不含有任何内容 |
+| public StringBuilder(String str) | 根据字符串的内容，创建可变字符串对象                 |
+
+常用成员方法：
+| 方法名                                  | 说明                                                |
+| --------------------------------------- | --------------------------------------------------- |
+| public   StringBuilder append(任意类型) | 添加数据，并返回对象本身                            |
+| public StringBuilder reverse()          | 反转容器中的内容                                    |
+| public int length()                     | 返回长度（字符出现的个数）                          |
+| public String toString()                | 通过toString()就可以实现把StringBuilder转换为String |
+
 
 ### 3.1 基本使用
 
@@ -664,30 +618,35 @@ public class StringBuilderDemo3 {
         //1.创建对象
         StringBuilder sb = new StringBuilder("abc");
 
-        //2.添加元素
-        /*sb.append(1);
+        //StringBuilder是Java已经写好的类
+        //java在底层对他做了一些特殊处理。
+        //打印的不是地址值而是属性值，此处打印出的是abc
+        System.out.println(sb);
+      
+        //2.添加元素（任意属性）
+        sb.append(1);
         sb.append(2.3);
-        sb.append(true);*/
+        sb.append(true);
 
-        //反转
+        //3.反转
         sb.reverse();
 
-        //获取长度
+        //4.获取长度
         int len = sb.length();
         System.out.println(len);
-
-
-        //打印
-        //普及：
-        //因为StringBuilder是Java已经写好的类
-        //java在底层对他做了一些特殊处理。
-        //打印对象不是地址值而是属性值。
-        System.out.println(sb);
-    }
+            
+        //5.把StringBuilder转换成String
+        String str = sb.toString();
+        System.out.println(str);
+   }
 }
 ```
 
 ### 3.2 链式编程
+
+当我们在调用一个方法的时候，不需要用变量接受其结果，可以继续调用其他方法（依赖前一个方法的结果，再去调用后面的方法）
+
+特点：把方法的调用都写在一行，形成链式
 
 ```java
 public class StringBuilderDemo4 {
@@ -696,14 +655,12 @@ public class StringBuilderDemo4 {
         StringBuilder sb = new StringBuilder();
 
         //2.添加字符串
-        sb.append("aaa").append("bbb").append("ccc").append("ddd");
-
+      sb.append("aaa").append("bbb").append("ccc").append("ddd");
         System.out.println(sb);//aaabbbcccddd
 
         //3.再把StringBuilder变回字符串
         String str = sb.toString();
         System.out.println(str);//aaabbbcccddd
-
     }
 }
 ```
@@ -715,7 +672,6 @@ public class StringBuilderDemo4 {
 ​	键盘接受一个字符串，程序判断出该字符串是否是对称字符串，并在控制台打印是或不是
 
   	对称字符串：123321、111
-  	
   	非对称字符串：123123
 
 代码示例：
@@ -741,13 +697,9 @@ public class StringBuilderDemo6 {
         }else{
             System.out.println("当前字符串不是对称字符串");
         }
-
     }
 }
-
 ```
-
-
 
 ### 3.4 练习2：拼接字符串 
 
@@ -762,8 +714,6 @@ public class StringBuilderDemo6 {
 代码示例:
 
 ```java
-package com.itheima.stringbuilderdemo;
-
 public class StringBuilderDemo7 {
     public static void main(String[] args) {
         //1.定义数组
@@ -773,7 +723,6 @@ public class StringBuilderDemo7 {
         String str = arrToString(arr);
 
         System.out.println(str);
-
     }
 
 
@@ -793,7 +742,6 @@ public class StringBuilderDemo7 {
         return sb.toString();
     }
 }
-
 ```
 
 ## 4. StringJoiner
